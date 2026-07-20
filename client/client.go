@@ -8,9 +8,9 @@ import (
 	antchainutil "github.com/antchain-openapi-sdk-go/antchain-util/service"
 )
 
-/**
- * Model for initing client
- */
+// Description:
+//
+// Model for initing client
 type Config struct {
 	// accesskey id
 	AccessKeyId *string `json:"accessKeyId,omitempty" xml:"accessKeyId,omitempty"`
@@ -19,26 +19,66 @@ type Config struct {
 	// security token
 	SecurityToken *string `json:"securityToken,omitempty" xml:"securityToken,omitempty"`
 	// http protocol
+	//
+	// example:
+	//
+	// http
 	Protocol *string `json:"protocol,omitempty" xml:"protocol,omitempty"`
 	// read timeout
+	//
+	// example:
+	//
+	// 10
 	ReadTimeout *int `json:"readTimeout,omitempty" xml:"readTimeout,omitempty"`
 	// connect timeout
+	//
+	// example:
+	//
+	// 10
 	ConnectTimeout *int `json:"connectTimeout,omitempty" xml:"connectTimeout,omitempty"`
 	// http proxy
+	//
+	// example:
+	//
+	// http://localhost
 	HttpProxy *string `json:"httpProxy,omitempty" xml:"httpProxy,omitempty"`
 	// https proxy
+	//
+	// example:
+	//
+	// https://localhost
 	HttpsProxy *string `json:"httpsProxy,omitempty" xml:"httpsProxy,omitempty"`
 	// endpoint
+	//
+	// example:
+	//
+	// cs.aliyuncs.com
 	Endpoint *string `json:"endpoint,omitempty" xml:"endpoint,omitempty"`
 	// proxy white list
+	//
+	// example:
+	//
+	// http://localhost
 	NoProxy *string `json:"noProxy,omitempty" xml:"noProxy,omitempty"`
 	// max idle conns
+	//
+	// example:
+	//
+	// 3
 	MaxIdleConns *int `json:"maxIdleConns,omitempty" xml:"maxIdleConns,omitempty"`
 	// user agent
+	//
+	// example:
+	//
+	// Alibabacloud/1
 	UserAgent *string `json:"userAgent,omitempty" xml:"userAgent,omitempty"`
 	// socks5 proxy
 	Socks5Proxy *string `json:"socks5Proxy,omitempty" xml:"socks5Proxy,omitempty"`
 	// socks5 network
+	//
+	// example:
+	//
+	// TCP
 	Socks5NetWork *string `json:"socks5NetWork,omitempty" xml:"socks5NetWork,omitempty"`
 	// 长链接最大空闲时长
 	MaxIdleTimeMillis *int `json:"maxIdleTimeMillis,omitempty" xml:"maxIdleTimeMillis,omitempty"`
@@ -151,8 +191,14 @@ func (s *Config) SetMaxRequestsPerHost(v int) *Config {
 // 经营分账收入方列表
 type OperateDivideTransInModel struct {
 	// 分账收入方支付宝用户id, 支付宝2088id
+	// example:
+	//
+	// 2088id
 	TransInUserId *string `json:"trans_in_user_id,omitempty" xml:"trans_in_user_id,omitempty" require:"true"`
 	// 分账金额，单位为分 大于0
+	// example:
+	//
+	// 12324
 	DivideAmount *int64 `json:"divide_amount,omitempty" xml:"divide_amount,omitempty" require:"true"`
 }
 
@@ -177,12 +223,24 @@ func (s *OperateDivideTransInModel) SetDivideAmount(v int64) *OperateDivideTrans
 // 还款策略
 type RepayStrategy struct {
 	// 应付租金时间，精确到天 格式为yyyy-MM-dd
+	// example:
+	//
+	// 2025-09-19
 	PayDay *string `json:"pay_day,omitempty" xml:"pay_day,omitempty" require:"true"`
 	// 用户还款期数，从1开始
+	// example:
+	//
+	// 1
 	TermIndex *int64 `json:"term_index,omitempty" xml:"term_index,omitempty" require:"true"`
 	// 应付租金，精确到分，即1234表示12.34元 大于0
+	// example:
+	//
+	// 1234
 	RentalMoney *int64 `json:"rental_money,omitempty" xml:"rental_money,omitempty" require:"true"`
 	// 是否经营分账, Y-是、N-否 为空代表否
+	// example:
+	//
+	// Y
 	OperateDivideFlag *string `json:"operate_divide_flag,omitempty" xml:"operate_divide_flag,omitempty"`
 	// 经营分账收入方列表
 	// 当operateDivideFlag 为Y时必填
@@ -192,6 +250,9 @@ type RepayStrategy struct {
 	// Y：停止；由商户调用接口「支付相关接入 - 代扣计划重试」触发代扣；否则代扣不会被执行、到逾期时间后会被逾期
 	//
 	// N : 不停止；保持数科自动代扣（默认）
+	// example:
+	//
+	// N
 	NoNeedAutoDeduction *string `json:"no_need_auto_deduction,omitempty" xml:"no_need_auto_deduction,omitempty"`
 }
 
@@ -233,22 +294,122 @@ func (s *RepayStrategy) SetNoNeedAutoDeduction(v string) *RepayStrategy {
 	return s
 }
 
+// 分账账号详情，针对某一笔分账
+type OrderSplitDetailList struct {
+	// 某笔分账状态：PROCESSING-处理中,SUCCESS-成功,CLOSE-关闭,FAILED-失败
+	// example:
+	//
+	// SUCCESS
+	SplitStatus *string `json:"split_status,omitempty" xml:"split_status,omitempty" require:"true"`
+	// 分账金额，单位：分
+	// example:
+	//
+	// 990
+	SplitAmount *int64 `json:"split_amount,omitempty" xml:"split_amount,omitempty" require:"true"`
+	// 分账执行时间，格式为yyyy-MM-dd HH:mm:ss
+	// 条件返回：splitStatus=SUCCESS 返回
+	// example:
+	//
+	// 2021-07-30 12:00:00
+	ExecuteTime *string `json:"execute_time,omitempty" xml:"execute_time,omitempty"`
+	// 分账转出账号
+	// example:
+	//
+	// 2088101126765726
+	TransOutAccount *string `json:"trans_out_account,omitempty" xml:"trans_out_account,omitempty" require:"true"`
+	// 分账转入账号
+	// example:
+	//
+	// 2088101126765726
+	TransInAccount *string `json:"trans_in_account,omitempty" xml:"trans_in_account,omitempty" require:"true"`
+	// 分账失败原因，条件返回：splitStatus=FAILED 返回
+	// example:
+	//
+	// 账户余额不足
+	SplitFailedReason *string `json:"split_failed_reason,omitempty" xml:"split_failed_reason,omitempty"`
+}
+
+func (s OrderSplitDetailList) String() string {
+	return tea.Prettify(s)
+}
+
+func (s OrderSplitDetailList) GoString() string {
+	return s.String()
+}
+
+func (s *OrderSplitDetailList) SetSplitStatus(v string) *OrderSplitDetailList {
+	s.SplitStatus = &v
+	return s
+}
+
+func (s *OrderSplitDetailList) SetSplitAmount(v int64) *OrderSplitDetailList {
+	s.SplitAmount = &v
+	return s
+}
+
+func (s *OrderSplitDetailList) SetExecuteTime(v string) *OrderSplitDetailList {
+	s.ExecuteTime = &v
+	return s
+}
+
+func (s *OrderSplitDetailList) SetTransOutAccount(v string) *OrderSplitDetailList {
+	s.TransOutAccount = &v
+	return s
+}
+
+func (s *OrderSplitDetailList) SetTransInAccount(v string) *OrderSplitDetailList {
+	s.TransInAccount = &v
+	return s
+}
+
+func (s *OrderSplitDetailList) SetSplitFailedReason(v string) *OrderSplitDetailList {
+	s.SplitFailedReason = &v
+	return s
+}
+
+// 订单详情列表
+type OrderDetail struct {
+}
+
+func (s OrderDetail) String() string {
+	return tea.Prettify(s)
+}
+
+func (s OrderDetail) GoString() string {
+	return s.String()
+}
+
 // 主订单信息
 type OrderInfoReq struct {
 	// 订单创建时间
+	// example:
+	//
+	// 2018-10-10T10:10:00Z
 	OrderCreateTime *string `json:"order_create_time,omitempty" xml:"order_create_time,omitempty" require:"true" pattern:"\\d{4}[-]\\d{1,2}[-]\\d{1,2}[T]\\d{2}:\\d{2}:\\d{2}([Z]|([\\.]\\d{1,9})?[\\+]\\d{2}[\\:]?\\d{2})"`
 	// 订单付款主题
+	// example:
+	//
+	// 退订、续订,人工客服电话:4006476616商家订单号：
 	OrderPaySubject *string `json:"order_pay_subject,omitempty" xml:"order_pay_subject,omitempty" require:"true"`
 	// 总租期
 	// 总租期最小值为1
 	// 总租期最大值为60
+	// example:
+	//
+	// 12
 	RentTerm *int64 `json:"rent_term,omitempty" xml:"rent_term,omitempty" require:"true"`
 	// 租期单位
 	// MONTH : 月
 	// DAY : 天
+	// example:
+	//
+	// MONTH
 	RentUnit *string `json:"rent_unit,omitempty" xml:"rent_unit,omitempty"`
 	// 租金总额 单位/分
 	// 最小值为1
+	// example:
+	//
+	// 1234
 	TotalRentMoney *int64 `json:"total_rent_money,omitempty" xml:"total_rent_money,omitempty" require:"true"`
 }
 
@@ -289,14 +450,26 @@ func (s *OrderInfoReq) SetTotalRentMoney(v int64) *OrderInfoReq {
 type OrderPromise struct {
 	// 宽限期/天
 	// 不传默认为0
+	// example:
+	//
+	// 1233
 	GracePeriodDays *int64 `json:"grace_period_days,omitempty" xml:"grace_period_days,omitempty"`
 	// 罚息类型
 	//  NONE : 没有罚息  PENALTY_FEE： 罚息（暂不支持）
+	// example:
+	//
+	// NONE
 	PunishmentType *string `json:"punishment_type,omitempty" xml:"punishment_type,omitempty"`
 	// 租期
 	// 租期最小值为1
+	// example:
+	//
+	// 11
 	PayPeriod *int64 `json:"pay_period,omitempty" xml:"pay_period,omitempty" require:"true"`
 	// 租赁公司支付宝UID
+	// example:
+	//
+	// 2088Id
 	LeaseAlipayUid *string `json:"lease_alipay_uid,omitempty" xml:"lease_alipay_uid,omitempty" require:"true"`
 	// 还款策略
 	// repayStrategyList长度 == payPeriod
@@ -336,34 +509,27 @@ func (s *OrderPromise) SetRepayStrategyList(v []*RepayStrategy) *OrderPromise {
 	return s
 }
 
-// 订单详情列表
-type OrderDetail struct {
-	// 凭证编号
-	VoucherCode *string `json:"voucher_code,omitempty" xml:"voucher_code,omitempty" require:"true"`
-}
-
-func (s OrderDetail) String() string {
-	return tea.Prettify(s)
-}
-
-func (s OrderDetail) GoString() string {
-	return s.String()
-}
-
-func (s *OrderDetail) SetVoucherCode(v string) *OrderDetail {
-	s.VoucherCode = &v
-	return s
-}
-
 // 结算订单分账明细对象
 type SettleOrderRoyaltyDetail struct {
 	// 分账金额，单位：分
+	// example:
+	//
+	// 1000
 	Amount *int64 `json:"amount,omitempty" xml:"amount,omitempty"`
 	// 分账执行时间
+	// example:
+	//
+	// 2021-07-30 12:00:00
 	ExecuteTime *string `json:"execute_time,omitempty" xml:"execute_time,omitempty"`
 	// 分账转出账号
+	// example:
+	//
+	// 2088111111111111
 	TransOutAccount *string `json:"trans_out_account,omitempty" xml:"trans_out_account,omitempty"`
 	// 分账转入账号
+	// example:
+	//
+	// 2088111111111111
 	TransInAccount *string `json:"trans_in_account,omitempty" xml:"trans_in_account,omitempty"`
 }
 
@@ -395,30 +561,96 @@ func (s *SettleOrderRoyaltyDetail) SetTransInAccount(v string) *SettleOrderRoyal
 	return s
 }
 
+// 分账详情
+type OrderSplitInfo struct {
+	// 主订单分账状态，PROCESSING-处理中,SUCCESS-成功,FAILED-失败
+	// example:
+	//
+	// SUCCESS
+	OrderSplitStatus *string `json:"order_split_status,omitempty" xml:"order_split_status,omitempty" require:"true"`
+	// 分账账号个数
+	// example:
+	//
+	// 9
+	OrderSplitAccountCount *int64 `json:"order_split_account_count,omitempty" xml:"order_split_account_count,omitempty" require:"true"`
+	// 分账账号详情，针对某一笔分账
+	// example:
+	//
+	// undefined
+	OrderSplitDetailList []*OrderSplitDetailList `json:"order_split_detail_list,omitempty" xml:"order_split_detail_list,omitempty" require:"true" type:"Repeated"`
+}
+
+func (s OrderSplitInfo) String() string {
+	return tea.Prettify(s)
+}
+
+func (s OrderSplitInfo) GoString() string {
+	return s.String()
+}
+
+func (s *OrderSplitInfo) SetOrderSplitStatus(v string) *OrderSplitInfo {
+	s.OrderSplitStatus = &v
+	return s
+}
+
+func (s *OrderSplitInfo) SetOrderSplitAccountCount(v int64) *OrderSplitInfo {
+	s.OrderSplitAccountCount = &v
+	return s
+}
+
+func (s *OrderSplitInfo) SetOrderSplitDetailList(v []*OrderSplitDetailList) *OrderSplitInfo {
+	s.OrderSplitDetailList = v
+	return s
+}
+
 // 订单进件请求参数
 type OrderFullInfoReq struct {
 	// 订单号
 	//
+	// example:
+	//
+	// 1798234932684395
 	OrderId *string `json:"order_id,omitempty" xml:"order_id,omitempty" require:"true"`
 	// 手机号
+	// example:
+	//
+	// 15629827201
 	MobilePhone *string `json:"mobile_phone,omitempty" xml:"mobile_phone,omitempty" require:"true"`
 	// 产品ID=实际产品ID#版本 prod#1
 	//
+	// example:
+	//
+	// prod#1
 	ProductId *string `json:"product_id,omitempty" xml:"product_id,omitempty" require:"true"`
 	// 商户的统一社会信用代码
+	// example:
+	//
+	// 2088xxx
 	MerchantId *string `json:"merchant_id,omitempty" xml:"merchant_id,omitempty" require:"true"`
 	// 商户公司名字
+	// example:
+	//
+	// 蚂蚁云创xxx有限公司
 	MerchantName *string `json:"merchant_name,omitempty" xml:"merchant_name,omitempty" require:"true"`
 	// 业务场景 默认为CHARGING_BY_TERM
 	// CHARGING_BY_ORDER : 整单结算
 	// CHARGING_BY_TERM : 分期结算
 	//  CHARGING_BY_TERM_INDIRECT : 间联模式使用，分期结算
 	//  CHARGING_BY_PROFIT : 分润结算
+	// example:
+	//
+	// CHARGING_BY_TERM
 	BizScene *string `json:"biz_scene,omitempty" xml:"biz_scene,omitempty" require:"true"`
 	// 业务类型 LEASE : 租赁 （默认） INSTALLMENT: 分期付款
 	//
+	// example:
+	//
+	// INSTALLMENT
 	BizType *string `json:"biz_type,omitempty" xml:"biz_type,omitempty" require:"true"`
 	// 签署模式 NONE : 灵活签约
+	// example:
+	//
+	// NONE
 	SignMode *string `json:"sign_mode,omitempty" xml:"sign_mode,omitempty" require:"true"`
 	// 主订单信息
 	OrderInfo *OrderInfoReq `json:"order_info,omitempty" xml:"order_info,omitempty" require:"true"`
@@ -487,15 +719,30 @@ func (s *OrderFullInfoReq) SetPromiseInfo(v *OrderPromise) *OrderFullInfoReq {
 // 响应结果基类
 type CommonResponse struct {
 	// 结果码
+	// example:
+	//
+	// 100001
 	Code *string `json:"code,omitempty" xml:"code,omitempty" require:"true"`
 	// 返回码描述
+	// example:
+	//
+	// 成功
 	Msg *string `json:"msg,omitempty" xml:"msg,omitempty" require:"true"`
 	// 业务处理结果码
 	//
+	// example:
+	//
+	// fail
 	SubCode *string `json:"sub_code,omitempty" xml:"sub_code,omitempty"`
 	// 返回的提示信息
+	// example:
+	//
+	// 失败
 	SubMsg *string `json:"sub_msg,omitempty" xml:"sub_msg,omitempty"`
 	// 可否重试
+	// example:
+	//
+	// true, false
 	Retry *bool `json:"retry,omitempty" xml:"retry,omitempty"`
 }
 
@@ -532,14 +779,92 @@ func (s *CommonResponse) SetRetry(v bool) *CommonResponse {
 	return s
 }
 
+// 支付详情
+type OrderPayInfo struct {
+	// 支付状态：PROCESSING-处理中,SUCCESS-成功,CLOSE-关闭,FAILED-失败
+	// example:
+	//
+	// SUCCESS
+	OrderPayStatus *string `json:"order_pay_status,omitempty" xml:"order_pay_status,omitempty" require:"true"`
+	// 支付时间，条件返回：orderPayStatus=SUCCESS 返回
+	// example:
+	//
+	// 2021-07-30 12:00:00
+	OrderPayTime *string `json:"order_pay_time,omitempty" xml:"order_pay_time,omitempty"`
+	// 失败原因，条件返回：orderPayStatus=FAILED 返回
+	// example:
+	//
+	// 账户余额不足
+	OrderPayFailedReason *string `json:"order_pay_failed_reason,omitempty" xml:"order_pay_failed_reason,omitempty"`
+	// 支付金额，单位：分，条件返回：orderPayStatus=SUCCESS 返回
+	// example:
+	//
+	// 990
+	PayAmount *int64 `json:"pay_amount,omitempty" xml:"pay_amount,omitempty"`
+	// 实际支付金额，单位：分，条件返回：orderPayStatus=SUCCESS 返回
+	// example:
+	//
+	// 990
+	RealPayAmount *int64 `json:"real_pay_amount,omitempty" xml:"real_pay_amount,omitempty"`
+	// 收款金额，单位：分，条件返回：orderPayStatus=SUCCESS 返回
+	// example:
+	//
+	// 990
+	RealReceiptAmount *int64 `json:"real_receipt_amount,omitempty" xml:"real_receipt_amount,omitempty"`
+}
+
+func (s OrderPayInfo) String() string {
+	return tea.Prettify(s)
+}
+
+func (s OrderPayInfo) GoString() string {
+	return s.String()
+}
+
+func (s *OrderPayInfo) SetOrderPayStatus(v string) *OrderPayInfo {
+	s.OrderPayStatus = &v
+	return s
+}
+
+func (s *OrderPayInfo) SetOrderPayTime(v string) *OrderPayInfo {
+	s.OrderPayTime = &v
+	return s
+}
+
+func (s *OrderPayInfo) SetOrderPayFailedReason(v string) *OrderPayInfo {
+	s.OrderPayFailedReason = &v
+	return s
+}
+
+func (s *OrderPayInfo) SetPayAmount(v int64) *OrderPayInfo {
+	s.PayAmount = &v
+	return s
+}
+
+func (s *OrderPayInfo) SetRealPayAmount(v int64) *OrderPayInfo {
+	s.RealPayAmount = &v
+	return s
+}
+
+func (s *OrderPayInfo) SetRealReceiptAmount(v int64) *OrderPayInfo {
+	s.RealReceiptAmount = &v
+	return s
+}
+
 // 权益发放结果
 type RightsGrantResultVO struct {
 	// 过期时间
+	// example:
+	//
+	// 2018-10-10T10:10:00Z
 	ExpireTime *string `json:"expire_time,omitempty" xml:"expire_time,omitempty" pattern:"\\d{4}[-]\\d{1,2}[-]\\d{1,2}[T]\\d{2}:\\d{2}:\\d{2}([Z]|([\\.]\\d{1,9})?[\\+]\\d{2}[\\:]?\\d{2})"`
 	// 生效时间
 	EffectTime *string `json:"effect_time,omitempty" xml:"effect_time,omitempty" pattern:"\\d{4}[-]\\d{1,2}[-]\\d{1,2}[T]\\d{2}:\\d{2}:\\d{2}([Z]|([\\.]\\d{1,9})?[\\+]\\d{2}[\\:]?\\d{2})"`
 	// 发放状态：
 	// GRANTING：发放处理中 GRANT_SUCCESS：发放成功 GRANT_FAIL：发放失败
+	// example:
+	//
+	// GRANTING
 	GrantStatus *string `json:"grant_status,omitempty" xml:"grant_status,omitempty" require:"true"`
 	// 订单详情列表
 	OrderDetails []*OrderDetail `json:"order_details,omitempty" xml:"order_details,omitempty" type:"Repeated"`
@@ -576,14 +901,29 @@ func (s *RightsGrantResultVO) SetOrderDetails(v []*OrderDetail) *RightsGrantResu
 // 券基本信息
 type VoucherBaseInfoVO struct {
 	// 2088xxxxxx0001
+	// example:
+	//
+	// 用户ID
 	UserId *string `json:"user_id,omitempty" xml:"user_id,omitempty"`
 	// 手机号
+	// example:
+	//
+	// 15700001111
 	PhoneNumber *string `json:"phone_number,omitempty" xml:"phone_number,omitempty"`
 	// 权益编号
+	// example:
+	//
+	// RC188955110502576765
 	RightsCode *string `json:"rights_code,omitempty" xml:"rights_code,omitempty" require:"true"`
 	// 权益名称
+	// example:
+	//
+	// 满10元减2元
 	RightsName *string `json:"rights_name,omitempty" xml:"rights_name,omitempty" require:"true"`
 	// 券码
+	// example:
+	//
+	// 202601160007300227760ZT3CMQY
 	VoucherCode *string `json:"voucher_code,omitempty" xml:"voucher_code,omitempty" require:"true"`
 	// 券状态
 	// WAIT_EFFECT：待生效
@@ -597,6 +937,9 @@ type VoucherBaseInfoVO struct {
 	// VERIFY_CANCELING：核销撤销中
 	// INVALID：已失效
 	// NO_NEED_VERIFY：无需核销
+	// example:
+	//
+	// WAIT_VERIFY
 	Status *string `json:"status,omitempty" xml:"status,omitempty" require:"true"`
 }
 
@@ -641,8 +984,14 @@ func (s *VoucherBaseInfoVO) SetStatus(v string) *VoucherBaseInfoVO {
 // 退款账户明细信息
 type RefundDetail struct {
 	// 支出方账户ID，如果是支付宝：以2088开头的纯16位数字
+	// example:
+	//
+	// 2088101126765726
 	TransOutAccount *string `json:"trans_out_account,omitempty" xml:"trans_out_account,omitempty"`
 	// 分账的金额，单位为分
+	// example:
+	//
+	// 990
 	Amount *int64 `json:"amount,omitempty" xml:"amount,omitempty"`
 }
 
@@ -664,6 +1013,49 @@ func (s *RefundDetail) SetAmount(v int64) *RefundDetail {
 	return s
 }
 
+// 条件返回：refundStatus=SUCCESS 返回
+// 退分账明细
+type RefundDetailItemList struct {
+	// 退款退分账金额，单位为分
+	// example:
+	//
+	// 990
+	Amount *int64 `json:"amount,omitempty" xml:"amount,omitempty"`
+	// 退款退分账支出账号
+	// example:
+	//
+	// 2088101126765726
+	TransOutAccount *string `json:"trans_out_account,omitempty" xml:"trans_out_account,omitempty"`
+	// 退款退分账转入账号
+	// example:
+	//
+	// 2088101126765726
+	TransInAccount *string `json:"trans_in_account,omitempty" xml:"trans_in_account,omitempty"`
+}
+
+func (s RefundDetailItemList) String() string {
+	return tea.Prettify(s)
+}
+
+func (s RefundDetailItemList) GoString() string {
+	return s.String()
+}
+
+func (s *RefundDetailItemList) SetAmount(v int64) *RefundDetailItemList {
+	s.Amount = &v
+	return s
+}
+
+func (s *RefundDetailItemList) SetTransOutAccount(v string) *RefundDetailItemList {
+	s.TransOutAccount = &v
+	return s
+}
+
+func (s *RefundDetailItemList) SetTransInAccount(v string) *RefundDetailItemList {
+	s.TransInAccount = &v
+	return s
+}
+
 type PushOrderSettlementRequest struct {
 	// OAuth模式下的授权token
 	AuthToken         *string `json:"auth_token,omitempty" xml:"auth_token,omitempty"`
@@ -672,14 +1064,18 @@ type PushOrderSettlementRequest struct {
 	OutProductId *string `json:"out_product_id,omitempty" xml:"out_product_id,omitempty" require:"true"`
 	// 外部订单号(同一个outProductId保证唯一性)，需保证在商家端不重复，64个字符以内
 	OutOrderNo *string `json:"out_order_no,omitempty" xml:"out_order_no,omitempty" require:"true"`
-	// 支付宝/微信/其他  平台订单号
-	TradeNo *string `json:"trade_no,omitempty" xml:"trade_no,omitempty" require:"true"`
-	// 支付渠道类型，枚举值：ALIPAY / WECHAT
-	OrderType *string `json:"order_type,omitempty" xml:"order_type,omitempty" require:"true"`
-	// 订单金额，单位：分（如 990 表示 9.90元）
-	OrderAmount *int64 `json:"order_amount,omitempty" xml:"order_amount,omitempty" require:"true"`
+	// 订单支付金额(同分账金额)，单位：分（如 990 表示 9.90元）
+	TotalAmount *int64 `json:"total_amount,omitempty" xml:"total_amount,omitempty" require:"true"`
+	// 支付渠道类型，默认：ALIPAY
+	OrderType *string `json:"order_type,omitempty" xml:"order_type,omitempty"`
 	// 扩展参数，JSONString格式
 	ExtInfo *string `json:"ext_info,omitempty" xml:"ext_info,omitempty"`
+	// 订单创建时间，格式为yyyy-MM-dd HH:mm:ss
+	OrderCreateTime *string `json:"order_create_time,omitempty" xml:"order_create_time,omitempty" require:"true"`
+	// 订单支付标题， 150个字符以内
+	PaySubject *string `json:"pay_subject,omitempty" xml:"pay_subject,omitempty" require:"true"`
+	// 支付渠道，默认：JSAPI
+	PayChannel *string `json:"pay_channel,omitempty" xml:"pay_channel,omitempty"`
 }
 
 func (s PushOrderSettlementRequest) String() string {
@@ -710,8 +1106,8 @@ func (s *PushOrderSettlementRequest) SetOutOrderNo(v string) *PushOrderSettlemen
 	return s
 }
 
-func (s *PushOrderSettlementRequest) SetTradeNo(v string) *PushOrderSettlementRequest {
-	s.TradeNo = &v
+func (s *PushOrderSettlementRequest) SetTotalAmount(v int64) *PushOrderSettlementRequest {
+	s.TotalAmount = &v
 	return s
 }
 
@@ -720,13 +1116,23 @@ func (s *PushOrderSettlementRequest) SetOrderType(v string) *PushOrderSettlement
 	return s
 }
 
-func (s *PushOrderSettlementRequest) SetOrderAmount(v int64) *PushOrderSettlementRequest {
-	s.OrderAmount = &v
+func (s *PushOrderSettlementRequest) SetExtInfo(v string) *PushOrderSettlementRequest {
+	s.ExtInfo = &v
 	return s
 }
 
-func (s *PushOrderSettlementRequest) SetExtInfo(v string) *PushOrderSettlementRequest {
-	s.ExtInfo = &v
+func (s *PushOrderSettlementRequest) SetOrderCreateTime(v string) *PushOrderSettlementRequest {
+	s.OrderCreateTime = &v
+	return s
+}
+
+func (s *PushOrderSettlementRequest) SetPaySubject(v string) *PushOrderSettlementRequest {
+	s.PaySubject = &v
+	return s
+}
+
+func (s *PushOrderSettlementRequest) SetPayChannel(v string) *PushOrderSettlementRequest {
+	s.PayChannel = &v
 	return s
 }
 
@@ -739,10 +1145,6 @@ type PushOrderSettlementResponse struct {
 	ResultMsg *string `json:"result_msg,omitempty" xml:"result_msg,omitempty"`
 	// 支付宝/微信/其他 平台订单号
 	TradeNo *string `json:"trade_no,omitempty" xml:"trade_no,omitempty"`
-	// 分账单号，可以根据该单号查询单次分账请求执行结果
-	SettleNo *string `json:"settle_no,omitempty" xml:"settle_no,omitempty"`
-	// 外部订单号(商家)
-	OutOrderNo *string `json:"out_order_no,omitempty" xml:"out_order_no,omitempty"`
 }
 
 func (s PushOrderSettlementResponse) String() string {
@@ -773,22 +1175,12 @@ func (s *PushOrderSettlementResponse) SetTradeNo(v string) *PushOrderSettlementR
 	return s
 }
 
-func (s *PushOrderSettlementResponse) SetSettleNo(v string) *PushOrderSettlementResponse {
-	s.SettleNo = &v
-	return s
-}
-
-func (s *PushOrderSettlementResponse) SetOutOrderNo(v string) *PushOrderSettlementResponse {
-	s.OutOrderNo = &v
-	return s
-}
-
 type QueryOrderSettlementRequest struct {
 	// OAuth模式下的授权token
 	AuthToken         *string `json:"auth_token,omitempty" xml:"auth_token,omitempty"`
 	ProductInstanceId *string `json:"product_instance_id,omitempty" xml:"product_instance_id,omitempty"`
-	// 分账请求单号
-	SettleNo *string `json:"settle_no,omitempty" xml:"settle_no,omitempty" require:"true"`
+	// 外部订单号
+	OutOrderNo *string `json:"out_order_no,omitempty" xml:"out_order_no,omitempty" require:"true"`
 }
 
 func (s QueryOrderSettlementRequest) String() string {
@@ -809,8 +1201,8 @@ func (s *QueryOrderSettlementRequest) SetProductInstanceId(v string) *QueryOrder
 	return s
 }
 
-func (s *QueryOrderSettlementRequest) SetSettleNo(v string) *QueryOrderSettlementRequest {
-	s.SettleNo = &v
+func (s *QueryOrderSettlementRequest) SetOutOrderNo(v string) *QueryOrderSettlementRequest {
+	s.OutOrderNo = &v
 	return s
 }
 
@@ -821,20 +1213,20 @@ type QueryOrderSettlementResponse struct {
 	ResultCode *string `json:"result_code,omitempty" xml:"result_code,omitempty"`
 	// 异常信息的文本描述
 	ResultMsg *string `json:"result_msg,omitempty" xml:"result_msg,omitempty"`
-	// 分账受理时间，格式为yyyy-MM-dd HH:mm:ss
-	SplitRequestTime *string `json:"split_request_time,omitempty" xml:"split_request_time,omitempty"`
-	// 分账明细
-	SplitDetailList []*SettleOrderRoyaltyDetail `json:"split_detail_list,omitempty" xml:"split_detail_list,omitempty" type:"Repeated"`
-	// 支付宝 平台订单号
+	// 商家产品唯一编码，64个字符以内
+	OutProductId *string `json:"out_product_id,omitempty" xml:"out_product_id,omitempty"`
+	// 订单金额，单位：分（如 990 表示 9.90元）
+	TotalAmount *int64 `json:"total_amount,omitempty" xml:"total_amount,omitempty"`
+	// 订单创建时间，格式为yyyy-MM-dd HH:mm:ss
+	OrderCreateTime *string `json:"order_create_time,omitempty" xml:"order_create_time,omitempty"`
+	// 订单支付标题， 150个字符以内
+	PaySubject *string `json:"pay_subject,omitempty" xml:"pay_subject,omitempty"`
+	// 支付宝支付订单号，用于拉起主动支付页面
 	TradeNo *string `json:"trade_no,omitempty" xml:"trade_no,omitempty"`
-	// 外部订单号(同一个outProductId唯一)
-	OutOrderNo *string `json:"out_order_no,omitempty" xml:"out_order_no,omitempty"`
-	// 分账状态，SUCCESS成功，FAIL失败，PROCESSING处理中
-	SplitStatus *string `json:"split_status,omitempty" xml:"split_status,omitempty"`
-	// 分账失败原因
-	SplitFailReason *string `json:"split_fail_reason,omitempty" xml:"split_fail_reason,omitempty"`
-	// 分账单号
-	SettleNo *string `json:"settle_no,omitempty" xml:"settle_no,omitempty"`
+	// 支付详情
+	OrderPayInfo *OrderPayInfo `json:"order_pay_info,omitempty" xml:"order_pay_info,omitempty"`
+	// 分账详情
+	OrderAplitInfo *OrderSplitInfo `json:"order_aplit_info,omitempty" xml:"order_aplit_info,omitempty"`
 }
 
 func (s QueryOrderSettlementResponse) String() string {
@@ -860,13 +1252,23 @@ func (s *QueryOrderSettlementResponse) SetResultMsg(v string) *QueryOrderSettlem
 	return s
 }
 
-func (s *QueryOrderSettlementResponse) SetSplitRequestTime(v string) *QueryOrderSettlementResponse {
-	s.SplitRequestTime = &v
+func (s *QueryOrderSettlementResponse) SetOutProductId(v string) *QueryOrderSettlementResponse {
+	s.OutProductId = &v
 	return s
 }
 
-func (s *QueryOrderSettlementResponse) SetSplitDetailList(v []*SettleOrderRoyaltyDetail) *QueryOrderSettlementResponse {
-	s.SplitDetailList = v
+func (s *QueryOrderSettlementResponse) SetTotalAmount(v int64) *QueryOrderSettlementResponse {
+	s.TotalAmount = &v
+	return s
+}
+
+func (s *QueryOrderSettlementResponse) SetOrderCreateTime(v string) *QueryOrderSettlementResponse {
+	s.OrderCreateTime = &v
+	return s
+}
+
+func (s *QueryOrderSettlementResponse) SetPaySubject(v string) *QueryOrderSettlementResponse {
+	s.PaySubject = &v
 	return s
 }
 
@@ -875,23 +1277,13 @@ func (s *QueryOrderSettlementResponse) SetTradeNo(v string) *QueryOrderSettlemen
 	return s
 }
 
-func (s *QueryOrderSettlementResponse) SetOutOrderNo(v string) *QueryOrderSettlementResponse {
-	s.OutOrderNo = &v
+func (s *QueryOrderSettlementResponse) SetOrderPayInfo(v *OrderPayInfo) *QueryOrderSettlementResponse {
+	s.OrderPayInfo = v
 	return s
 }
 
-func (s *QueryOrderSettlementResponse) SetSplitStatus(v string) *QueryOrderSettlementResponse {
-	s.SplitStatus = &v
-	return s
-}
-
-func (s *QueryOrderSettlementResponse) SetSplitFailReason(v string) *QueryOrderSettlementResponse {
-	s.SplitFailReason = &v
-	return s
-}
-
-func (s *QueryOrderSettlementResponse) SetSettleNo(v string) *QueryOrderSettlementResponse {
-	s.SettleNo = &v
+func (s *QueryOrderSettlementResponse) SetOrderAplitInfo(v *OrderSplitInfo) *QueryOrderSettlementResponse {
+	s.OrderAplitInfo = v
 	return s
 }
 
@@ -899,12 +1291,6 @@ type WithdrawOrderSettlementRequest struct {
 	// OAuth模式下的授权token
 	AuthToken         *string `json:"auth_token,omitempty" xml:"auth_token,omitempty"`
 	ProductInstanceId *string `json:"product_instance_id,omitempty" xml:"product_instance_id,omitempty"`
-	// 退分账金额，单位：分
-	RefundAmount *int64 `json:"refund_amount,omitempty" xml:"refund_amount,omitempty" require:"true"`
-	// 分账单号
-	SettleNo *string `json:"settle_no,omitempty" xml:"settle_no,omitempty" require:"true"`
-	// 退款原因说明。 商家自定义，将在会在商户和用户的pc退款账单详情中展示
-	RefundReason *string `json:"refund_reason,omitempty" xml:"refund_reason,omitempty"`
 }
 
 func (s WithdrawOrderSettlementRequest) String() string {
@@ -925,21 +1311,6 @@ func (s *WithdrawOrderSettlementRequest) SetProductInstanceId(v string) *Withdra
 	return s
 }
 
-func (s *WithdrawOrderSettlementRequest) SetRefundAmount(v int64) *WithdrawOrderSettlementRequest {
-	s.RefundAmount = &v
-	return s
-}
-
-func (s *WithdrawOrderSettlementRequest) SetSettleNo(v string) *WithdrawOrderSettlementRequest {
-	s.SettleNo = &v
-	return s
-}
-
-func (s *WithdrawOrderSettlementRequest) SetRefundReason(v string) *WithdrawOrderSettlementRequest {
-	s.RefundReason = &v
-	return s
-}
-
 type WithdrawOrderSettlementResponse struct {
 	// 请求唯一ID，用于链路跟踪和问题排查
 	ReqMsgId *string `json:"req_msg_id,omitempty" xml:"req_msg_id,omitempty"`
@@ -947,16 +1318,6 @@ type WithdrawOrderSettlementResponse struct {
 	ResultCode *string `json:"result_code,omitempty" xml:"result_code,omitempty"`
 	// 异常信息的文本描述
 	ResultMsg *string `json:"result_msg,omitempty" xml:"result_msg,omitempty"`
-	// 支付交易号
-	TradeNo *string `json:"trade_no,omitempty" xml:"trade_no,omitempty"`
-	// 外部订单号(同一个outProductId唯一)
-	OutOrderNo *string `json:"out_order_no,omitempty" xml:"out_order_no,omitempty"`
-	// 退分账时间，格式为yyyy-MM-dd HH:mm:ss
-	RefundTime *string `json:"refund_time,omitempty" xml:"refund_time,omitempty"`
-	// 分账账单
-	SettleNo *string `json:"settle_no,omitempty" xml:"settle_no,omitempty"`
-	// 退分账唯一编号
-	RefundNo *string `json:"refund_no,omitempty" xml:"refund_no,omitempty"`
 }
 
 func (s WithdrawOrderSettlementResponse) String() string {
@@ -982,37 +1343,10 @@ func (s *WithdrawOrderSettlementResponse) SetResultMsg(v string) *WithdrawOrderS
 	return s
 }
 
-func (s *WithdrawOrderSettlementResponse) SetTradeNo(v string) *WithdrawOrderSettlementResponse {
-	s.TradeNo = &v
-	return s
-}
-
-func (s *WithdrawOrderSettlementResponse) SetOutOrderNo(v string) *WithdrawOrderSettlementResponse {
-	s.OutOrderNo = &v
-	return s
-}
-
-func (s *WithdrawOrderSettlementResponse) SetRefundTime(v string) *WithdrawOrderSettlementResponse {
-	s.RefundTime = &v
-	return s
-}
-
-func (s *WithdrawOrderSettlementResponse) SetSettleNo(v string) *WithdrawOrderSettlementResponse {
-	s.SettleNo = &v
-	return s
-}
-
-func (s *WithdrawOrderSettlementResponse) SetRefundNo(v string) *WithdrawOrderSettlementResponse {
-	s.RefundNo = &v
-	return s
-}
-
 type QueryOrderWithdrawRequest struct {
 	// OAuth模式下的授权token
 	AuthToken         *string `json:"auth_token,omitempty" xml:"auth_token,omitempty"`
 	ProductInstanceId *string `json:"product_instance_id,omitempty" xml:"product_instance_id,omitempty"`
-	// 支付宝 平台订单号
-	TradeNo *string `json:"trade_no,omitempty" xml:"trade_no,omitempty" require:"true"`
 }
 
 func (s QueryOrderWithdrawRequest) String() string {
@@ -1033,11 +1367,6 @@ func (s *QueryOrderWithdrawRequest) SetProductInstanceId(v string) *QueryOrderWi
 	return s
 }
 
-func (s *QueryOrderWithdrawRequest) SetTradeNo(v string) *QueryOrderWithdrawRequest {
-	s.TradeNo = &v
-	return s
-}
-
 type QueryOrderWithdrawResponse struct {
 	// 请求唯一ID，用于链路跟踪和问题排查
 	ReqMsgId *string `json:"req_msg_id,omitempty" xml:"req_msg_id,omitempty"`
@@ -1045,13 +1374,6 @@ type QueryOrderWithdrawResponse struct {
 	ResultCode *string `json:"result_code,omitempty" xml:"result_code,omitempty"`
 	// 异常信息的文本描述
 	ResultMsg *string `json:"result_msg,omitempty" xml:"result_msg,omitempty"`
-	// 支付交易号
-	TradeNo *string `json:"trade_no,omitempty" xml:"trade_no,omitempty"`
-	// 退分账明细
-	RefundDetailItemList *SettleOrderRoyaltyDetail `json:"refund_detail_item_list,omitempty" xml:"refund_detail_item_list,omitempty"`
-	// 交易退分账总金额，单位：分
-	// 明细单金额总和
-	TradeRefundAmount *int64 `json:"trade_refund_amount,omitempty" xml:"trade_refund_amount,omitempty"`
 }
 
 func (s QueryOrderWithdrawResponse) String() string {
@@ -1077,18 +1399,235 @@ func (s *QueryOrderWithdrawResponse) SetResultMsg(v string) *QueryOrderWithdrawR
 	return s
 }
 
-func (s *QueryOrderWithdrawResponse) SetTradeNo(v string) *QueryOrderWithdrawResponse {
+type PushOrderRefundRequest struct {
+	// OAuth模式下的授权token
+	AuthToken         *string `json:"auth_token,omitempty" xml:"auth_token,omitempty"`
+	ProductInstanceId *string `json:"product_instance_id,omitempty" xml:"product_instance_id,omitempty"`
+	// 外部订单号
+	OutOrderNo *string `json:"out_order_no,omitempty" xml:"out_order_no,omitempty" require:"true"`
+	// 外部系统传入的退款请求号
+	RefundRequestNo *string `json:"refund_request_no,omitempty" xml:"refund_request_no,omitempty" require:"true"`
+	// 退款退分账金额，单位：分
+	// 限制条件：大于0，小于等于订单金额
+	RefundAmount *int64 `json:"refund_amount,omitempty" xml:"refund_amount,omitempty" require:"true"`
+	// 退款退分账原因
+	RefundReason *string `json:"refund_reason,omitempty" xml:"refund_reason,omitempty"`
+}
+
+func (s PushOrderRefundRequest) String() string {
+	return tea.Prettify(s)
+}
+
+func (s PushOrderRefundRequest) GoString() string {
+	return s.String()
+}
+
+func (s *PushOrderRefundRequest) SetAuthToken(v string) *PushOrderRefundRequest {
+	s.AuthToken = &v
+	return s
+}
+
+func (s *PushOrderRefundRequest) SetProductInstanceId(v string) *PushOrderRefundRequest {
+	s.ProductInstanceId = &v
+	return s
+}
+
+func (s *PushOrderRefundRequest) SetOutOrderNo(v string) *PushOrderRefundRequest {
+	s.OutOrderNo = &v
+	return s
+}
+
+func (s *PushOrderRefundRequest) SetRefundRequestNo(v string) *PushOrderRefundRequest {
+	s.RefundRequestNo = &v
+	return s
+}
+
+func (s *PushOrderRefundRequest) SetRefundAmount(v int64) *PushOrderRefundRequest {
+	s.RefundAmount = &v
+	return s
+}
+
+func (s *PushOrderRefundRequest) SetRefundReason(v string) *PushOrderRefundRequest {
+	s.RefundReason = &v
+	return s
+}
+
+type PushOrderRefundResponse struct {
+	// 请求唯一ID，用于链路跟踪和问题排查
+	ReqMsgId *string `json:"req_msg_id,omitempty" xml:"req_msg_id,omitempty"`
+	// 结果码，一般OK表示调用成功
+	ResultCode *string `json:"result_code,omitempty" xml:"result_code,omitempty"`
+	// 异常信息的文本描述
+	ResultMsg *string `json:"result_msg,omitempty" xml:"result_msg,omitempty"`
+	// 外部系统传入的退款请求号
+	RefundRequestNo *string `json:"refund_request_no,omitempty" xml:"refund_request_no,omitempty"`
+	// 退款退分账请求状态， ACCEPT : 受理成功
+	RefundStatus *string `json:"refund_status,omitempty" xml:"refund_status,omitempty"`
+	// 本次退款退分账唯一标识
+	RefundOrderNo *string `json:"refund_order_no,omitempty" xml:"refund_order_no,omitempty"`
+}
+
+func (s PushOrderRefundResponse) String() string {
+	return tea.Prettify(s)
+}
+
+func (s PushOrderRefundResponse) GoString() string {
+	return s.String()
+}
+
+func (s *PushOrderRefundResponse) SetReqMsgId(v string) *PushOrderRefundResponse {
+	s.ReqMsgId = &v
+	return s
+}
+
+func (s *PushOrderRefundResponse) SetResultCode(v string) *PushOrderRefundResponse {
+	s.ResultCode = &v
+	return s
+}
+
+func (s *PushOrderRefundResponse) SetResultMsg(v string) *PushOrderRefundResponse {
+	s.ResultMsg = &v
+	return s
+}
+
+func (s *PushOrderRefundResponse) SetRefundRequestNo(v string) *PushOrderRefundResponse {
+	s.RefundRequestNo = &v
+	return s
+}
+
+func (s *PushOrderRefundResponse) SetRefundStatus(v string) *PushOrderRefundResponse {
+	s.RefundStatus = &v
+	return s
+}
+
+func (s *PushOrderRefundResponse) SetRefundOrderNo(v string) *PushOrderRefundResponse {
+	s.RefundOrderNo = &v
+	return s
+}
+
+type QueryOrderRefundRequest struct {
+	// OAuth模式下的授权token
+	AuthToken         *string `json:"auth_token,omitempty" xml:"auth_token,omitempty"`
+	ProductInstanceId *string `json:"product_instance_id,omitempty" xml:"product_instance_id,omitempty"`
+	// 退款退分账唯一标识
+	RefundOrderNo *string `json:"refund_order_no,omitempty" xml:"refund_order_no,omitempty" require:"true"`
+}
+
+func (s QueryOrderRefundRequest) String() string {
+	return tea.Prettify(s)
+}
+
+func (s QueryOrderRefundRequest) GoString() string {
+	return s.String()
+}
+
+func (s *QueryOrderRefundRequest) SetAuthToken(v string) *QueryOrderRefundRequest {
+	s.AuthToken = &v
+	return s
+}
+
+func (s *QueryOrderRefundRequest) SetProductInstanceId(v string) *QueryOrderRefundRequest {
+	s.ProductInstanceId = &v
+	return s
+}
+
+func (s *QueryOrderRefundRequest) SetRefundOrderNo(v string) *QueryOrderRefundRequest {
+	s.RefundOrderNo = &v
+	return s
+}
+
+type QueryOrderRefundResponse struct {
+	// 请求唯一ID，用于链路跟踪和问题排查
+	ReqMsgId *string `json:"req_msg_id,omitempty" xml:"req_msg_id,omitempty"`
+	// 结果码，一般OK表示调用成功
+	ResultCode *string `json:"result_code,omitempty" xml:"result_code,omitempty"`
+	// 异常信息的文本描述
+	ResultMsg *string `json:"result_msg,omitempty" xml:"result_msg,omitempty"`
+	// 支付交易号
+	TradeNo *string `json:"trade_no,omitempty" xml:"trade_no,omitempty"`
+	// 外部系统传入的退款请求流水号
+	RefundRequestNo *string `json:"refund_request_no,omitempty" xml:"refund_request_no,omitempty"`
+	// 退款请求状态
+	// ● ACCEPT: 受理成功
+	// ● PENDING: 需人工介入
+	// ● SUCCESS: 成功
+	// ● FAILED : 失败
+	RefundStatus *string `json:"refund_status,omitempty" xml:"refund_status,omitempty"`
+	// 退款退分账申请金额
+	RefundAmount *int64 `json:"refund_amount,omitempty" xml:"refund_amount,omitempty"`
+	// 本次退款申请的实际退款金额，单位：分
+	// 条件返回：refundStatus=SUCCESS 返回
+	SendBackAmount *int64 `json:"send_back_amount,omitempty" xml:"send_back_amount,omitempty"`
+	// 退款退分账失败原因，条件返回：refundStatus=FAILED 返回
+	RefundFailedReason *string `json:"refund_failed_reason,omitempty" xml:"refund_failed_reason,omitempty"`
+	// 退款退分账时间，格式为yyyy-MM-dd HH:mm:ss
+	// 条件返回：refundStatus=SUCCESS 返回
+	RefundTime *string `json:"refund_time,omitempty" xml:"refund_time,omitempty"`
+	// 条件返回：refundStatus=SUCCESS 返回
+	// 退分账明细
+	RefundDetailItemList []*RefundDetailItemList `json:"refund_detail_item_list,omitempty" xml:"refund_detail_item_list,omitempty" type:"Repeated"`
+}
+
+func (s QueryOrderRefundResponse) String() string {
+	return tea.Prettify(s)
+}
+
+func (s QueryOrderRefundResponse) GoString() string {
+	return s.String()
+}
+
+func (s *QueryOrderRefundResponse) SetReqMsgId(v string) *QueryOrderRefundResponse {
+	s.ReqMsgId = &v
+	return s
+}
+
+func (s *QueryOrderRefundResponse) SetResultCode(v string) *QueryOrderRefundResponse {
+	s.ResultCode = &v
+	return s
+}
+
+func (s *QueryOrderRefundResponse) SetResultMsg(v string) *QueryOrderRefundResponse {
+	s.ResultMsg = &v
+	return s
+}
+
+func (s *QueryOrderRefundResponse) SetTradeNo(v string) *QueryOrderRefundResponse {
 	s.TradeNo = &v
 	return s
 }
 
-func (s *QueryOrderWithdrawResponse) SetRefundDetailItemList(v *SettleOrderRoyaltyDetail) *QueryOrderWithdrawResponse {
-	s.RefundDetailItemList = v
+func (s *QueryOrderRefundResponse) SetRefundRequestNo(v string) *QueryOrderRefundResponse {
+	s.RefundRequestNo = &v
 	return s
 }
 
-func (s *QueryOrderWithdrawResponse) SetTradeRefundAmount(v int64) *QueryOrderWithdrawResponse {
-	s.TradeRefundAmount = &v
+func (s *QueryOrderRefundResponse) SetRefundStatus(v string) *QueryOrderRefundResponse {
+	s.RefundStatus = &v
+	return s
+}
+
+func (s *QueryOrderRefundResponse) SetRefundAmount(v int64) *QueryOrderRefundResponse {
+	s.RefundAmount = &v
+	return s
+}
+
+func (s *QueryOrderRefundResponse) SetSendBackAmount(v int64) *QueryOrderRefundResponse {
+	s.SendBackAmount = &v
+	return s
+}
+
+func (s *QueryOrderRefundResponse) SetRefundFailedReason(v string) *QueryOrderRefundResponse {
+	s.RefundFailedReason = &v
+	return s
+}
+
+func (s *QueryOrderRefundResponse) SetRefundTime(v string) *QueryOrderRefundResponse {
+	s.RefundTime = &v
+	return s
+}
+
+func (s *QueryOrderRefundResponse) SetRefundDetailItemList(v []*RefundDetailItemList) *QueryOrderRefundResponse {
+	s.RefundDetailItemList = v
 	return s
 }
 
@@ -1782,10 +2321,11 @@ type Client struct {
 	MaxRequestsPerHost      *int
 }
 
-/**
- * Init client with Config
- * @param config config contains the necessary information to create a client
- */
+// Description:
+//
+// # Init client with Config
+//
+// @param config - config contains the necessary information to create a client
 func NewClient(config *Config) (*Client, error) {
 	client := new(Client)
 	err := client.Init(config)
@@ -1793,7 +2333,7 @@ func NewClient(config *Config) (*Client, error) {
 }
 
 func (client *Client) Init(config *Config) (_err error) {
-	if tea.BoolValue(util.IsUnset(tea.ToMap(config))) {
+	if tea.BoolValue(util.IsUnset(config)) {
 		_err = tea.NewSDKError(map[string]interface{}{
 			"code":    "ParameterMissing",
 			"message": "'config' can not be unset",
@@ -1822,16 +2362,23 @@ func (client *Client) Init(config *Config) (_err error) {
 	return nil
 }
 
-/**
- * Encapsulate the request and invoke the network
- * @param action api name
- * @param protocol http or https
- * @param method e.g. GET
- * @param pathname pathname of every api
- * @param request which contains request params
- * @param runtime which controls some details of call api, such as retry times
- * @return the response
- */
+// Description:
+//
+// # Encapsulate the request and invoke the network
+//
+// @param action - api name
+//
+// @param protocol - http or https
+//
+// @param method - e.g. GET
+//
+// @param pathname - pathname of every api
+//
+// @param request - which contains request params
+//
+// @param runtime - which controls some details of call api, such as retry times
+//
+// @return the response
 func (client *Client) DoRequest(version *string, action *string, protocol *string, method *string, pathname *string, request map[string]interface{}, headers map[string]*string, runtime *util.RuntimeOptions) (_result map[string]interface{}, _err error) {
 	_err = tea.Validate(runtime)
 	if _err != nil {
@@ -1882,7 +2429,7 @@ func (client *Client) DoRequest(version *string, action *string, protocol *strin
 				"req_msg_id":       antchainutil.GetNonce(),
 				"access_key":       client.AccessKeyId,
 				"base_sdk_version": tea.String("TeaSDK-2.0"),
-				"sdk_version":      tea.String("1.3.7"),
+				"sdk_version":      tea.String("1.3.9"),
 				"_prod_code":       tea.String("GESAAS"),
 				"_prod_channel":    tea.String("default"),
 			}
@@ -1940,10 +2487,11 @@ func (client *Client) DoRequest(version *string, action *string, protocol *strin
 	return _resp, _err
 }
 
-/**
- * Description: 分账订单推送
- * Summary: 分账订单推送
- */
+// Description:
+//
+// Description: 支付+分账订单推送(创建)
+//
+// Summary: 支付+分账订单推送(创建)
 func (client *Client) PushOrderSettlement(request *PushOrderSettlementRequest) (_result *PushOrderSettlementResponse, _err error) {
 	runtime := &util.RuntimeOptions{}
 	headers := make(map[string]*string)
@@ -1956,10 +2504,11 @@ func (client *Client) PushOrderSettlement(request *PushOrderSettlementRequest) (
 	return _result, _err
 }
 
-/**
- * Description: 分账订单推送
- * Summary: 分账订单推送
- */
+// Description:
+//
+// Description: 支付+分账订单推送(创建)
+//
+// Summary: 支付+分账订单推送(创建)
 func (client *Client) PushOrderSettlementEx(request *PushOrderSettlementRequest, headers map[string]*string, runtime *util.RuntimeOptions) (_result *PushOrderSettlementResponse, _err error) {
 	_err = util.ValidateModel(request)
 	if _err != nil {
@@ -1974,10 +2523,11 @@ func (client *Client) PushOrderSettlementEx(request *PushOrderSettlementRequest,
 	return _result, _err
 }
 
-/**
- * Description: 分账订单查询
- * Summary: 分账订单查询
- */
+// Description:
+//
+// Description: 订单结果查询(支付+分账)
+//
+// Summary: 订单结果查询(支付+分账)
 func (client *Client) QueryOrderSettlement(request *QueryOrderSettlementRequest) (_result *QueryOrderSettlementResponse, _err error) {
 	runtime := &util.RuntimeOptions{}
 	headers := make(map[string]*string)
@@ -1990,10 +2540,11 @@ func (client *Client) QueryOrderSettlement(request *QueryOrderSettlementRequest)
 	return _result, _err
 }
 
-/**
- * Description: 分账订单查询
- * Summary: 分账订单查询
- */
+// Description:
+//
+// Description: 订单结果查询(支付+分账)
+//
+// Summary: 订单结果查询(支付+分账)
 func (client *Client) QueryOrderSettlementEx(request *QueryOrderSettlementRequest, headers map[string]*string, runtime *util.RuntimeOptions) (_result *QueryOrderSettlementResponse, _err error) {
 	_err = util.ValidateModel(request)
 	if _err != nil {
@@ -2008,10 +2559,11 @@ func (client *Client) QueryOrderSettlementEx(request *QueryOrderSettlementReques
 	return _result, _err
 }
 
-/**
- * Description: 退分账接口
- * Summary: 退分账接口
- */
+// Description:
+//
+// Description: 退分账接口(废弃)
+//
+// Summary: 退分账接口(废弃)
 func (client *Client) WithdrawOrderSettlement(request *WithdrawOrderSettlementRequest) (_result *WithdrawOrderSettlementResponse, _err error) {
 	runtime := &util.RuntimeOptions{}
 	headers := make(map[string]*string)
@@ -2024,10 +2576,11 @@ func (client *Client) WithdrawOrderSettlement(request *WithdrawOrderSettlementRe
 	return _result, _err
 }
 
-/**
- * Description: 退分账接口
- * Summary: 退分账接口
- */
+// Description:
+//
+// Description: 退分账接口(废弃)
+//
+// Summary: 退分账接口(废弃)
 func (client *Client) WithdrawOrderSettlementEx(request *WithdrawOrderSettlementRequest, headers map[string]*string, runtime *util.RuntimeOptions) (_result *WithdrawOrderSettlementResponse, _err error) {
 	_err = util.ValidateModel(request)
 	if _err != nil {
@@ -2042,10 +2595,11 @@ func (client *Client) WithdrawOrderSettlementEx(request *WithdrawOrderSettlement
 	return _result, _err
 }
 
-/**
- * Description: 退分账查询接口
- * Summary: 退分账查询接口
- */
+// Description:
+//
+// Description: 退分账查询接口(废弃)
+//
+// Summary: 退分账查询接口(废弃)
 func (client *Client) QueryOrderWithdraw(request *QueryOrderWithdrawRequest) (_result *QueryOrderWithdrawResponse, _err error) {
 	runtime := &util.RuntimeOptions{}
 	headers := make(map[string]*string)
@@ -2058,10 +2612,11 @@ func (client *Client) QueryOrderWithdraw(request *QueryOrderWithdrawRequest) (_r
 	return _result, _err
 }
 
-/**
- * Description: 退分账查询接口
- * Summary: 退分账查询接口
- */
+// Description:
+//
+// Description: 退分账查询接口(废弃)
+//
+// Summary: 退分账查询接口(废弃)
 func (client *Client) QueryOrderWithdrawEx(request *QueryOrderWithdrawRequest, headers map[string]*string, runtime *util.RuntimeOptions) (_result *QueryOrderWithdrawResponse, _err error) {
 	_err = util.ValidateModel(request)
 	if _err != nil {
@@ -2076,10 +2631,83 @@ func (client *Client) QueryOrderWithdrawEx(request *QueryOrderWithdrawRequest, h
 	return _result, _err
 }
 
-/**
- * Description: 品牌会员签约鉴权产品链路风控鉴权
- * Summary: 风控鉴权
- */
+// Description:
+//
+// Description: 退款退分账发起(创建)
+//
+// Summary: 退款退分账发起(创建)
+func (client *Client) PushOrderRefund(request *PushOrderRefundRequest) (_result *PushOrderRefundResponse, _err error) {
+	runtime := &util.RuntimeOptions{}
+	headers := make(map[string]*string)
+	_result = &PushOrderRefundResponse{}
+	_body, _err := client.PushOrderRefundEx(request, headers, runtime)
+	if _err != nil {
+		return _result, _err
+	}
+	_result = _body
+	return _result, _err
+}
+
+// Description:
+//
+// Description: 退款退分账发起(创建)
+//
+// Summary: 退款退分账发起(创建)
+func (client *Client) PushOrderRefundEx(request *PushOrderRefundRequest, headers map[string]*string, runtime *util.RuntimeOptions) (_result *PushOrderRefundResponse, _err error) {
+	_err = util.ValidateModel(request)
+	if _err != nil {
+		return _result, _err
+	}
+	_result = &PushOrderRefundResponse{}
+	_body, _err := client.DoRequest(tea.String("1.0"), tea.String("antdigital.gesaas.order.refund.push"), tea.String("HTTPS"), tea.String("POST"), tea.String("/gateway.do"), tea.ToMap(request), headers, runtime)
+	if _err != nil {
+		return _result, _err
+	}
+	_err = tea.Convert(_body, &_result)
+	return _result, _err
+}
+
+// Description:
+//
+// Description: 退款退分账查询
+//
+// Summary: 退款退分账查询
+func (client *Client) QueryOrderRefund(request *QueryOrderRefundRequest) (_result *QueryOrderRefundResponse, _err error) {
+	runtime := &util.RuntimeOptions{}
+	headers := make(map[string]*string)
+	_result = &QueryOrderRefundResponse{}
+	_body, _err := client.QueryOrderRefundEx(request, headers, runtime)
+	if _err != nil {
+		return _result, _err
+	}
+	_result = _body
+	return _result, _err
+}
+
+// Description:
+//
+// Description: 退款退分账查询
+//
+// Summary: 退款退分账查询
+func (client *Client) QueryOrderRefundEx(request *QueryOrderRefundRequest, headers map[string]*string, runtime *util.RuntimeOptions) (_result *QueryOrderRefundResponse, _err error) {
+	_err = util.ValidateModel(request)
+	if _err != nil {
+		return _result, _err
+	}
+	_result = &QueryOrderRefundResponse{}
+	_body, _err := client.DoRequest(tea.String("1.0"), tea.String("antdigital.gesaas.order.refund.query"), tea.String("HTTPS"), tea.String("POST"), tea.String("/gateway.do"), tea.ToMap(request), headers, runtime)
+	if _err != nil {
+		return _result, _err
+	}
+	_err = tea.Convert(_body, &_result)
+	return _result, _err
+}
+
+// Description:
+//
+// Description: 品牌会员签约鉴权产品链路风控鉴权
+//
+// Summary: 风控鉴权
 func (client *Client) CheckOmngRisk(request *CheckOmngRiskRequest) (_result *CheckOmngRiskResponse, _err error) {
 	runtime := &util.RuntimeOptions{}
 	headers := make(map[string]*string)
@@ -2092,10 +2720,11 @@ func (client *Client) CheckOmngRisk(request *CheckOmngRiskRequest) (_result *Che
 	return _result, _err
 }
 
-/**
- * Description: 品牌会员签约鉴权产品链路风控鉴权
- * Summary: 风控鉴权
- */
+// Description:
+//
+// Description: 品牌会员签约鉴权产品链路风控鉴权
+//
+// Summary: 风控鉴权
 func (client *Client) CheckOmngRiskEx(request *CheckOmngRiskRequest, headers map[string]*string, runtime *util.RuntimeOptions) (_result *CheckOmngRiskResponse, _err error) {
 	_err = util.ValidateModel(request)
 	if _err != nil {
@@ -2110,10 +2739,11 @@ func (client *Client) CheckOmngRiskEx(request *CheckOmngRiskRequest, headers map
 	return _result, _err
 }
 
-/**
- * Description: 权益中心权益发放
- * Summary: 权益发放
- */
+// Description:
+//
+// Description: 权益中心权益发放
+//
+// Summary: 权益发放
 func (client *Client) SubmitRightsprodGrant(request *SubmitRightsprodGrantRequest) (_result *SubmitRightsprodGrantResponse, _err error) {
 	runtime := &util.RuntimeOptions{}
 	headers := make(map[string]*string)
@@ -2126,10 +2756,11 @@ func (client *Client) SubmitRightsprodGrant(request *SubmitRightsprodGrantReques
 	return _result, _err
 }
 
-/**
- * Description: 权益中心权益发放
- * Summary: 权益发放
- */
+// Description:
+//
+// Description: 权益中心权益发放
+//
+// Summary: 权益发放
 func (client *Client) SubmitRightsprodGrantEx(request *SubmitRightsprodGrantRequest, headers map[string]*string, runtime *util.RuntimeOptions) (_result *SubmitRightsprodGrantResponse, _err error) {
 	_err = util.ValidateModel(request)
 	if _err != nil {
@@ -2144,10 +2775,11 @@ func (client *Client) SubmitRightsprodGrantEx(request *SubmitRightsprodGrantRequ
 	return _result, _err
 }
 
-/**
- * Description: 权益发放结果查询
- * Summary: 权益发放结果查询
- */
+// Description:
+//
+// Description: 权益发放结果查询
+//
+// Summary: 权益发放结果查询
 func (client *Client) QueryRightsprodGrant(request *QueryRightsprodGrantRequest) (_result *QueryRightsprodGrantResponse, _err error) {
 	runtime := &util.RuntimeOptions{}
 	headers := make(map[string]*string)
@@ -2160,10 +2792,11 @@ func (client *Client) QueryRightsprodGrant(request *QueryRightsprodGrantRequest)
 	return _result, _err
 }
 
-/**
- * Description: 权益发放结果查询
- * Summary: 权益发放结果查询
- */
+// Description:
+//
+// Description: 权益发放结果查询
+//
+// Summary: 权益发放结果查询
 func (client *Client) QueryRightsprodGrantEx(request *QueryRightsprodGrantRequest, headers map[string]*string, runtime *util.RuntimeOptions) (_result *QueryRightsprodGrantResponse, _err error) {
 	_err = util.ValidateModel(request)
 	if _err != nil {
@@ -2178,10 +2811,11 @@ func (client *Client) QueryRightsprodGrantEx(request *QueryRightsprodGrantReques
 	return _result, _err
 }
 
-/**
- * Description: 券基本信息批量查询
- * Summary: 券基本信息批量查询
- */
+// Description:
+//
+// Description: 券基本信息批量查询
+//
+// Summary: 券基本信息批量查询
 func (client *Client) BatchqueryRightsprodVoucher(request *BatchqueryRightsprodVoucherRequest) (_result *BatchqueryRightsprodVoucherResponse, _err error) {
 	runtime := &util.RuntimeOptions{}
 	headers := make(map[string]*string)
@@ -2194,10 +2828,11 @@ func (client *Client) BatchqueryRightsprodVoucher(request *BatchqueryRightsprodV
 	return _result, _err
 }
 
-/**
- * Description: 券基本信息批量查询
- * Summary: 券基本信息批量查询
- */
+// Description:
+//
+// Description: 券基本信息批量查询
+//
+// Summary: 券基本信息批量查询
 func (client *Client) BatchqueryRightsprodVoucherEx(request *BatchqueryRightsprodVoucherRequest, headers map[string]*string, runtime *util.RuntimeOptions) (_result *BatchqueryRightsprodVoucherResponse, _err error) {
 	_err = util.ValidateModel(request)
 	if _err != nil {
@@ -2212,10 +2847,11 @@ func (client *Client) BatchqueryRightsprodVoucherEx(request *BatchqueryRightspro
 	return _result, _err
 }
 
-/**
- * Description: 权益中心数据流回调 API
- * Summary: 权益中心数据流回调 API
- */
+// Description:
+//
+// Description: 权益中心数据流回调 API
+//
+// Summary: 权益中心数据流回调 API
 func (client *Client) CallbackRightsprodOperation(request *CallbackRightsprodOperationRequest) (_result *CallbackRightsprodOperationResponse, _err error) {
 	runtime := &util.RuntimeOptions{}
 	headers := make(map[string]*string)
@@ -2228,10 +2864,11 @@ func (client *Client) CallbackRightsprodOperation(request *CallbackRightsprodOpe
 	return _result, _err
 }
 
-/**
- * Description: 权益中心数据流回调 API
- * Summary: 权益中心数据流回调 API
- */
+// Description:
+//
+// Description: 权益中心数据流回调 API
+//
+// Summary: 权益中心数据流回调 API
 func (client *Client) CallbackRightsprodOperationEx(request *CallbackRightsprodOperationRequest, headers map[string]*string, runtime *util.RuntimeOptions) (_result *CallbackRightsprodOperationResponse, _err error) {
 	_err = util.ValidateModel(request)
 	if _err != nil {
@@ -2246,10 +2883,11 @@ func (client *Client) CallbackRightsprodOperationEx(request *CallbackRightsprodO
 	return _result, _err
 }
 
-/**
- * Description: 权益中心API
- * Summary: 权益中心API
- */
+// Description:
+//
+// Description: 权益中心API
+//
+// Summary: 权益中心API
 func (client *Client) CallbackRightsprodOperationdata(request *CallbackRightsprodOperationdataRequest) (_result *CallbackRightsprodOperationdataResponse, _err error) {
 	runtime := &util.RuntimeOptions{}
 	headers := make(map[string]*string)
@@ -2262,10 +2900,11 @@ func (client *Client) CallbackRightsprodOperationdata(request *CallbackRightspro
 	return _result, _err
 }
 
-/**
- * Description: 权益中心API
- * Summary: 权益中心API
- */
+// Description:
+//
+// Description: 权益中心API
+//
+// Summary: 权益中心API
 func (client *Client) CallbackRightsprodOperationdataEx(request *CallbackRightsprodOperationdataRequest, headers map[string]*string, runtime *util.RuntimeOptions) (_result *CallbackRightsprodOperationdataResponse, _err error) {
 	_err = util.ValidateModel(request)
 	if _err != nil {
