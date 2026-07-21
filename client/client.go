@@ -1066,16 +1066,18 @@ type PushOrderSettlementRequest struct {
 	OutOrderNo *string `json:"out_order_no,omitempty" xml:"out_order_no,omitempty" require:"true"`
 	// 订单支付金额(同分账金额)，单位：分（如 990 表示 9.90元）
 	TotalAmount *int64 `json:"total_amount,omitempty" xml:"total_amount,omitempty" require:"true"`
-	// 支付渠道类型，默认：ALIPAY
-	OrderType *string `json:"order_type,omitempty" xml:"order_type,omitempty"`
+	// 支付产品，默认：JSAPI
+	PayProduct *string `json:"pay_product,omitempty" xml:"pay_product,omitempty"`
 	// 扩展参数，JSONString格式
 	ExtInfo *string `json:"ext_info,omitempty" xml:"ext_info,omitempty"`
 	// 订单创建时间，格式为yyyy-MM-dd HH:mm:ss
 	OrderCreateTime *string `json:"order_create_time,omitempty" xml:"order_create_time,omitempty" require:"true"`
 	// 订单支付标题， 150个字符以内
 	PaySubject *string `json:"pay_subject,omitempty" xml:"pay_subject,omitempty" require:"true"`
-	// 支付渠道，默认：JSAPI
+	// 支付渠道，默认：ALIPAY
 	PayChannel *string `json:"pay_channel,omitempty" xml:"pay_channel,omitempty"`
+	// 支付渠道是ALIPAY场景下传入支付宝用户2088xxxx
+	PayChannelUserId *string `json:"pay_channel_user_id,omitempty" xml:"pay_channel_user_id,omitempty" require:"true"`
 }
 
 func (s PushOrderSettlementRequest) String() string {
@@ -1111,8 +1113,8 @@ func (s *PushOrderSettlementRequest) SetTotalAmount(v int64) *PushOrderSettlemen
 	return s
 }
 
-func (s *PushOrderSettlementRequest) SetOrderType(v string) *PushOrderSettlementRequest {
-	s.OrderType = &v
+func (s *PushOrderSettlementRequest) SetPayProduct(v string) *PushOrderSettlementRequest {
+	s.PayProduct = &v
 	return s
 }
 
@@ -1133,6 +1135,11 @@ func (s *PushOrderSettlementRequest) SetPaySubject(v string) *PushOrderSettlemen
 
 func (s *PushOrderSettlementRequest) SetPayChannel(v string) *PushOrderSettlementRequest {
 	s.PayChannel = &v
+	return s
+}
+
+func (s *PushOrderSettlementRequest) SetPayChannelUserId(v string) *PushOrderSettlementRequest {
+	s.PayChannelUserId = &v
 	return s
 }
 
@@ -1227,6 +1234,12 @@ type QueryOrderSettlementResponse struct {
 	OrderPayInfo *OrderPayInfo `json:"order_pay_info,omitempty" xml:"order_pay_info,omitempty"`
 	// 分账详情
 	OrderAplitInfo *OrderSplitInfo `json:"order_aplit_info,omitempty" xml:"order_aplit_info,omitempty"`
+	// 支付渠道是ALIPAY场景下-支付宝用户2088xxxx
+	PayChannelUserId *string `json:"pay_channel_user_id,omitempty" xml:"pay_channel_user_id,omitempty"`
+	// 支付渠道，默认：ALIPAY
+	PayChannel *string `json:"pay_channel,omitempty" xml:"pay_channel,omitempty"`
+	// 支付产品，默认：JSAPI
+	PayProduct *string `json:"pay_product,omitempty" xml:"pay_product,omitempty"`
 }
 
 func (s QueryOrderSettlementResponse) String() string {
@@ -1284,6 +1297,21 @@ func (s *QueryOrderSettlementResponse) SetOrderPayInfo(v *OrderPayInfo) *QueryOr
 
 func (s *QueryOrderSettlementResponse) SetOrderAplitInfo(v *OrderSplitInfo) *QueryOrderSettlementResponse {
 	s.OrderAplitInfo = v
+	return s
+}
+
+func (s *QueryOrderSettlementResponse) SetPayChannelUserId(v string) *QueryOrderSettlementResponse {
+	s.PayChannelUserId = &v
+	return s
+}
+
+func (s *QueryOrderSettlementResponse) SetPayChannel(v string) *QueryOrderSettlementResponse {
+	s.PayChannel = &v
+	return s
+}
+
+func (s *QueryOrderSettlementResponse) SetPayProduct(v string) *QueryOrderSettlementResponse {
+	s.PayProduct = &v
 	return s
 }
 
@@ -2429,7 +2457,7 @@ func (client *Client) DoRequest(version *string, action *string, protocol *strin
 				"req_msg_id":       antchainutil.GetNonce(),
 				"access_key":       client.AccessKeyId,
 				"base_sdk_version": tea.String("TeaSDK-2.0"),
-				"sdk_version":      tea.String("1.3.9"),
+				"sdk_version":      tea.String("1.3.10"),
 				"_prod_code":       tea.String("GESAAS"),
 				"_prod_channel":    tea.String("default"),
 			}
