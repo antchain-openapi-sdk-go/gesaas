@@ -369,6 +369,11 @@ func (s *OrderSplitDetailList) SetSplitFailedReason(v string) *OrderSplitDetailL
 
 // 订单详情列表
 type OrderDetail struct {
+	// 券码
+	// example:
+	//
+	// 1798234932684395
+	VoucherCode *string `json:"voucher_code,omitempty" xml:"voucher_code,omitempty" require:"true"`
 }
 
 func (s OrderDetail) String() string {
@@ -377,6 +382,11 @@ func (s OrderDetail) String() string {
 
 func (s OrderDetail) GoString() string {
 	return s.String()
+}
+
+func (s *OrderDetail) SetVoucherCode(v string) *OrderDetail {
+	s.VoucherCode = &v
+	return s
 }
 
 // 主订单信息
@@ -1492,7 +1502,7 @@ type PushOrderRefundResponse struct {
 	// 退款退分账请求状态， ACCEPT : 受理成功
 	RefundStatus *string `json:"refund_status,omitempty" xml:"refund_status,omitempty"`
 	// 本次退款退分账唯一标识
-	RefundOrderNo *string `json:"refund_order_no,omitempty" xml:"refund_order_no,omitempty"`
+	RefundRecordNo *string `json:"refund_record_no,omitempty" xml:"refund_record_no,omitempty"`
 }
 
 func (s PushOrderRefundResponse) String() string {
@@ -1528,8 +1538,8 @@ func (s *PushOrderRefundResponse) SetRefundStatus(v string) *PushOrderRefundResp
 	return s
 }
 
-func (s *PushOrderRefundResponse) SetRefundOrderNo(v string) *PushOrderRefundResponse {
-	s.RefundOrderNo = &v
+func (s *PushOrderRefundResponse) SetRefundRecordNo(v string) *PushOrderRefundResponse {
+	s.RefundRecordNo = &v
 	return s
 }
 
@@ -1538,7 +1548,7 @@ type QueryOrderRefundRequest struct {
 	AuthToken         *string `json:"auth_token,omitempty" xml:"auth_token,omitempty"`
 	ProductInstanceId *string `json:"product_instance_id,omitempty" xml:"product_instance_id,omitempty"`
 	// 退款退分账唯一标识
-	RefundOrderNo *string `json:"refund_order_no,omitempty" xml:"refund_order_no,omitempty" require:"true"`
+	RefundRecordNo *string `json:"refund_record_no,omitempty" xml:"refund_record_no,omitempty" require:"true"`
 }
 
 func (s QueryOrderRefundRequest) String() string {
@@ -1559,8 +1569,8 @@ func (s *QueryOrderRefundRequest) SetProductInstanceId(v string) *QueryOrderRefu
 	return s
 }
 
-func (s *QueryOrderRefundRequest) SetRefundOrderNo(v string) *QueryOrderRefundRequest {
-	s.RefundOrderNo = &v
+func (s *QueryOrderRefundRequest) SetRefundRecordNo(v string) *QueryOrderRefundRequest {
+	s.RefundRecordNo = &v
 	return s
 }
 
@@ -2457,7 +2467,7 @@ func (client *Client) DoRequest(version *string, action *string, protocol *strin
 				"req_msg_id":       antchainutil.GetNonce(),
 				"access_key":       client.AccessKeyId,
 				"base_sdk_version": tea.String("TeaSDK-2.0"),
-				"sdk_version":      tea.String("1.3.10"),
+				"sdk_version":      tea.String("1.3.12"),
 				"_prod_code":       tea.String("GESAAS"),
 				"_prod_channel":    tea.String("default"),
 			}
@@ -2771,7 +2781,7 @@ func (client *Client) CheckOmngRiskEx(request *CheckOmngRiskRequest, headers map
 //
 // Description: 权益中心权益发放
 //
-// Summary: 权益发放
+// Summary: 权益中心权益发放
 func (client *Client) SubmitRightsprodGrant(request *SubmitRightsprodGrantRequest) (_result *SubmitRightsprodGrantResponse, _err error) {
 	runtime := &util.RuntimeOptions{}
 	headers := make(map[string]*string)
@@ -2788,7 +2798,7 @@ func (client *Client) SubmitRightsprodGrant(request *SubmitRightsprodGrantReques
 //
 // Description: 权益中心权益发放
 //
-// Summary: 权益发放
+// Summary: 权益中心权益发放
 func (client *Client) SubmitRightsprodGrantEx(request *SubmitRightsprodGrantRequest, headers map[string]*string, runtime *util.RuntimeOptions) (_result *SubmitRightsprodGrantResponse, _err error) {
 	_err = util.ValidateModel(request)
 	if _err != nil {
