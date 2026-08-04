@@ -1243,7 +1243,7 @@ type QueryOrderSettlementResponse struct {
 	// 支付详情
 	OrderPayInfo *OrderPayInfo `json:"order_pay_info,omitempty" xml:"order_pay_info,omitempty"`
 	// 分账详情
-	OrderAplitInfo *OrderSplitInfo `json:"order_aplit_info,omitempty" xml:"order_aplit_info,omitempty"`
+	OrderSplitInfo *OrderSplitInfo `json:"order_split_info,omitempty" xml:"order_split_info,omitempty"`
 	// 支付渠道是ALIPAY场景下-支付宝用户2088xxxx
 	PayChannelUserId *string `json:"pay_channel_user_id,omitempty" xml:"pay_channel_user_id,omitempty"`
 	// 支付渠道，默认：ALIPAY
@@ -1305,8 +1305,8 @@ func (s *QueryOrderSettlementResponse) SetOrderPayInfo(v *OrderPayInfo) *QueryOr
 	return s
 }
 
-func (s *QueryOrderSettlementResponse) SetOrderAplitInfo(v *OrderSplitInfo) *QueryOrderSettlementResponse {
-	s.OrderAplitInfo = v
+func (s *QueryOrderSettlementResponse) SetOrderSplitInfo(v *OrderSplitInfo) *QueryOrderSettlementResponse {
+	s.OrderSplitInfo = v
 	return s
 }
 
@@ -1837,6 +1837,10 @@ type SubmitRightsprodGrantRequest struct {
 	GrantInfo *string `json:"grant_info,omitempty" xml:"grant_info,omitempty"`
 	// 技术租户ID、当开通权益中心产品在非数科的应用租户下时需要填写对应的技术租户ID（涉及到时技术对接时 技术会分配，如未分配则不需要传参数）
 	TechTenantId *string `json:"tech_tenant_id,omitempty" xml:"tech_tenant_id,omitempty"`
+	// 用户openid
+	OpenId *string `json:"open_id,omitempty" xml:"open_id,omitempty"`
+	// 应用ID
+	AppId *string `json:"app_id,omitempty" xml:"app_id,omitempty"`
 }
 
 func (s SubmitRightsprodGrantRequest) String() string {
@@ -1904,6 +1908,16 @@ func (s *SubmitRightsprodGrantRequest) SetGrantInfo(v string) *SubmitRightsprodG
 
 func (s *SubmitRightsprodGrantRequest) SetTechTenantId(v string) *SubmitRightsprodGrantRequest {
 	s.TechTenantId = &v
+	return s
+}
+
+func (s *SubmitRightsprodGrantRequest) SetOpenId(v string) *SubmitRightsprodGrantRequest {
+	s.OpenId = &v
+	return s
+}
+
+func (s *SubmitRightsprodGrantRequest) SetAppId(v string) *SubmitRightsprodGrantRequest {
+	s.AppId = &v
 	return s
 }
 
@@ -2224,8 +2238,8 @@ type CallbackRightsprodOperationdataRequest struct {
 	ProductInstanceId *string `json:"product_instance_id,omitempty" xml:"product_instance_id,omitempty"`
 	// 通知ID(幂等)
 	NotifyId *string `json:"notify_id,omitempty" xml:"notify_id,omitempty" require:"true"`
-	// 权益编号
-	RightsCode *string `json:"rights_code,omitempty" xml:"rights_code,omitempty" require:"true"`
+	// 供应商供应权益编号
+	SupplyRightsCode *string `json:"supply_rights_code,omitempty" xml:"supply_rights_code,omitempty" require:"true"`
 	// 凭证编号
 	VoucherCode *string `json:"voucher_code,omitempty" xml:"voucher_code,omitempty" require:"true"`
 	// 业务类型 V_REFUND（退款） V_EXPIRE（过期） V_INVALID（作废） V_USE（核销） V_PUBLISH（发放）
@@ -2238,6 +2252,8 @@ type CallbackRightsprodOperationdataRequest struct {
 	FluxAmount *string `json:"flux_amount,omitempty" xml:"flux_amount,omitempty"`
 	// 业务发生时间
 	BizTime *string `json:"biz_time,omitempty" xml:"biz_time,omitempty" require:"true"`
+	// 业务扩展属性信息
+	ExtInfo *string `json:"ext_info,omitempty" xml:"ext_info,omitempty"`
 }
 
 func (s CallbackRightsprodOperationdataRequest) String() string {
@@ -2263,8 +2279,8 @@ func (s *CallbackRightsprodOperationdataRequest) SetNotifyId(v string) *Callback
 	return s
 }
 
-func (s *CallbackRightsprodOperationdataRequest) SetRightsCode(v string) *CallbackRightsprodOperationdataRequest {
-	s.RightsCode = &v
+func (s *CallbackRightsprodOperationdataRequest) SetSupplyRightsCode(v string) *CallbackRightsprodOperationdataRequest {
+	s.SupplyRightsCode = &v
 	return s
 }
 
@@ -2295,6 +2311,11 @@ func (s *CallbackRightsprodOperationdataRequest) SetFluxAmount(v string) *Callba
 
 func (s *CallbackRightsprodOperationdataRequest) SetBizTime(v string) *CallbackRightsprodOperationdataRequest {
 	s.BizTime = &v
+	return s
+}
+
+func (s *CallbackRightsprodOperationdataRequest) SetExtInfo(v string) *CallbackRightsprodOperationdataRequest {
+	s.ExtInfo = &v
 	return s
 }
 
@@ -2334,6 +2355,143 @@ func (s *CallbackRightsprodOperationdataResponse) SetResultMsg(v string) *Callba
 
 func (s *CallbackRightsprodOperationdataResponse) SetResult(v string) *CallbackRightsprodOperationdataResponse {
 	s.Result = &v
+	return s
+}
+
+type QueryRightsprodVoucherRequest struct {
+	// OAuth模式下的授权token
+	AuthToken         *string `json:"auth_token,omitempty" xml:"auth_token,omitempty"`
+	ProductInstanceId *string `json:"product_instance_id,omitempty" xml:"product_instance_id,omitempty"`
+	// 权益编码
+	RightsCode *string `json:"rights_code,omitempty" xml:"rights_code,omitempty" require:"true"`
+	// 券实例编码
+	VoucherCode *string `json:"voucher_code,omitempty" xml:"voucher_code,omitempty" require:"true"`
+}
+
+func (s QueryRightsprodVoucherRequest) String() string {
+	return tea.Prettify(s)
+}
+
+func (s QueryRightsprodVoucherRequest) GoString() string {
+	return s.String()
+}
+
+func (s *QueryRightsprodVoucherRequest) SetAuthToken(v string) *QueryRightsprodVoucherRequest {
+	s.AuthToken = &v
+	return s
+}
+
+func (s *QueryRightsprodVoucherRequest) SetProductInstanceId(v string) *QueryRightsprodVoucherRequest {
+	s.ProductInstanceId = &v
+	return s
+}
+
+func (s *QueryRightsprodVoucherRequest) SetRightsCode(v string) *QueryRightsprodVoucherRequest {
+	s.RightsCode = &v
+	return s
+}
+
+func (s *QueryRightsprodVoucherRequest) SetVoucherCode(v string) *QueryRightsprodVoucherRequest {
+	s.VoucherCode = &v
+	return s
+}
+
+type QueryRightsprodVoucherResponse struct {
+	// 请求唯一ID，用于链路跟踪和问题排查
+	ReqMsgId *string `json:"req_msg_id,omitempty" xml:"req_msg_id,omitempty"`
+	// 结果码，一般OK表示调用成功
+	ResultCode *string `json:"result_code,omitempty" xml:"result_code,omitempty"`
+	// 异常信息的文本描述
+	ResultMsg *string `json:"result_msg,omitempty" xml:"result_msg,omitempty"`
+	// 用户ID
+	UserId *string `json:"user_id,omitempty" xml:"user_id,omitempty"`
+	// 用户手机号
+	PhoneNumber *string `json:"phone_number,omitempty" xml:"phone_number,omitempty"`
+	// 用户openId
+	OpenId *string `json:"open_id,omitempty" xml:"open_id,omitempty"`
+	// 应用ID
+	AppId *string `json:"app_id,omitempty" xml:"app_id,omitempty"`
+	// 权益编码
+	RightsCode *string `json:"rights_code,omitempty" xml:"rights_code,omitempty"`
+	// 权益名称
+	RightsName *string `json:"rights_name,omitempty" xml:"rights_name,omitempty"`
+	// 券实例编码
+	VoucherCode *string `json:"voucher_code,omitempty" xml:"voucher_code,omitempty"`
+	// 券状态
+	// WAIT_EFFECT：待生效
+	// WAIT_VERIFY：待核销
+	// EXPIRED：已过期
+	// VERIFY_SUCCESS：核销成功（已核销）
+	// INVALID：已失效
+	// 公域场景下只会包含以上五种状态，私域场景会包含下方状态基
+	// FREEZE：已冻结
+	// VERIFYING：核销处理中
+	// VERIFY_FAIL：核销失败
+	// VERIFY_CANCELING：核销撤销中
+	// NO_NEED_VERIFY：无需核销
+	Status *string `json:"status,omitempty" xml:"status,omitempty"`
+}
+
+func (s QueryRightsprodVoucherResponse) String() string {
+	return tea.Prettify(s)
+}
+
+func (s QueryRightsprodVoucherResponse) GoString() string {
+	return s.String()
+}
+
+func (s *QueryRightsprodVoucherResponse) SetReqMsgId(v string) *QueryRightsprodVoucherResponse {
+	s.ReqMsgId = &v
+	return s
+}
+
+func (s *QueryRightsprodVoucherResponse) SetResultCode(v string) *QueryRightsprodVoucherResponse {
+	s.ResultCode = &v
+	return s
+}
+
+func (s *QueryRightsprodVoucherResponse) SetResultMsg(v string) *QueryRightsprodVoucherResponse {
+	s.ResultMsg = &v
+	return s
+}
+
+func (s *QueryRightsprodVoucherResponse) SetUserId(v string) *QueryRightsprodVoucherResponse {
+	s.UserId = &v
+	return s
+}
+
+func (s *QueryRightsprodVoucherResponse) SetPhoneNumber(v string) *QueryRightsprodVoucherResponse {
+	s.PhoneNumber = &v
+	return s
+}
+
+func (s *QueryRightsprodVoucherResponse) SetOpenId(v string) *QueryRightsprodVoucherResponse {
+	s.OpenId = &v
+	return s
+}
+
+func (s *QueryRightsprodVoucherResponse) SetAppId(v string) *QueryRightsprodVoucherResponse {
+	s.AppId = &v
+	return s
+}
+
+func (s *QueryRightsprodVoucherResponse) SetRightsCode(v string) *QueryRightsprodVoucherResponse {
+	s.RightsCode = &v
+	return s
+}
+
+func (s *QueryRightsprodVoucherResponse) SetRightsName(v string) *QueryRightsprodVoucherResponse {
+	s.RightsName = &v
+	return s
+}
+
+func (s *QueryRightsprodVoucherResponse) SetVoucherCode(v string) *QueryRightsprodVoucherResponse {
+	s.VoucherCode = &v
+	return s
+}
+
+func (s *QueryRightsprodVoucherResponse) SetStatus(v string) *QueryRightsprodVoucherResponse {
+	s.Status = &v
 	return s
 }
 
@@ -2467,7 +2625,7 @@ func (client *Client) DoRequest(version *string, action *string, protocol *strin
 				"req_msg_id":       antchainutil.GetNonce(),
 				"access_key":       client.AccessKeyId,
 				"base_sdk_version": tea.String("TeaSDK-2.0"),
-				"sdk_version":      tea.String("1.3.12"),
+				"sdk_version":      tea.String("1.3.13"),
 				"_prod_code":       tea.String("GESAAS"),
 				"_prod_channel":    tea.String("default"),
 			}
@@ -2950,6 +3108,42 @@ func (client *Client) CallbackRightsprodOperationdataEx(request *CallbackRightsp
 	}
 	_result = &CallbackRightsprodOperationdataResponse{}
 	_body, _err := client.DoRequest(tea.String("1.0"), tea.String("antdigital.gesaas.rightsprod.operationdata.callback"), tea.String("HTTPS"), tea.String("POST"), tea.String("/gateway.do"), tea.ToMap(request), headers, runtime)
+	if _err != nil {
+		return _result, _err
+	}
+	_err = tea.Convert(_body, &_result)
+	return _result, _err
+}
+
+// Description:
+//
+// Description: 券实例信息查询
+//
+// Summary: 券实例信息查询
+func (client *Client) QueryRightsprodVoucher(request *QueryRightsprodVoucherRequest) (_result *QueryRightsprodVoucherResponse, _err error) {
+	runtime := &util.RuntimeOptions{}
+	headers := make(map[string]*string)
+	_result = &QueryRightsprodVoucherResponse{}
+	_body, _err := client.QueryRightsprodVoucherEx(request, headers, runtime)
+	if _err != nil {
+		return _result, _err
+	}
+	_result = _body
+	return _result, _err
+}
+
+// Description:
+//
+// Description: 券实例信息查询
+//
+// Summary: 券实例信息查询
+func (client *Client) QueryRightsprodVoucherEx(request *QueryRightsprodVoucherRequest, headers map[string]*string, runtime *util.RuntimeOptions) (_result *QueryRightsprodVoucherResponse, _err error) {
+	_err = util.ValidateModel(request)
+	if _err != nil {
+		return _result, _err
+	}
+	_result = &QueryRightsprodVoucherResponse{}
+	_body, _err := client.DoRequest(tea.String("1.0"), tea.String("antdigital.gesaas.rightsprod.voucher.query"), tea.String("HTTPS"), tea.String("POST"), tea.String("/gateway.do"), tea.ToMap(request), headers, runtime)
 	if _err != nil {
 		return _result, _err
 	}
