@@ -2397,6 +2397,8 @@ type SaveOmngGenerationtaskRequest struct {
 	// 执行优先级 默认值 0
 	// 数值越大，优先级越高。
 	Priority *int64 `json:"priority,omitempty" xml:"priority,omitempty"`
+	// seedance视频大模型2.0版本
+	ProductCode *string `json:"product_code,omitempty" xml:"product_code,omitempty" require:"true"`
 }
 
 func (s SaveOmngGenerationtaskRequest) String() string {
@@ -2494,6 +2496,11 @@ func (s *SaveOmngGenerationtaskRequest) SetSafetyIdentifier(v string) *SaveOmngG
 
 func (s *SaveOmngGenerationtaskRequest) SetPriority(v int64) *SaveOmngGenerationtaskRequest {
 	s.Priority = &v
+	return s
+}
+
+func (s *SaveOmngGenerationtaskRequest) SetProductCode(v string) *SaveOmngGenerationtaskRequest {
+	s.ProductCode = &v
 	return s
 }
 
@@ -3444,7 +3451,7 @@ func (client *Client) DoRequest(version *string, action *string, protocol *strin
 				"req_msg_id":       antchainutil.GetNonce(),
 				"access_key":       client.AccessKeyId,
 				"base_sdk_version": tea.String("TeaSDK-2.0"),
-				"sdk_version":      tea.String("1.5.0"),
+				"sdk_version":      tea.String("1.6.0"),
 				"_prod_code":       tea.String("GESAAS"),
 				"_prod_channel":    tea.String("default"),
 			}
